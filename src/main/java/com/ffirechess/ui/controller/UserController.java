@@ -5,6 +5,7 @@ import com.ffirechess.service.UserService;
 import com.ffirechess.shared.dto.UserDto;
 import com.ffirechess.ui.model.request.UserDetaisRequestModel;
 import com.ffirechess.ui.model.response.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -41,11 +42,13 @@ public class UserController {
 
         if (userdDetails.getNick().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(userdDetails, userDto);
+//        UserDto userDto = new UserDto();
+//        BeanUtils.copyProperties(userdDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
+        UserDto userDto = modelMapper.map(userdDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
-        BeanUtils.copyProperties(createdUser, returnValue);
+        returnValue = modelMapper.map(createdUser, UserRest.class);
 
         return returnValue;
     }

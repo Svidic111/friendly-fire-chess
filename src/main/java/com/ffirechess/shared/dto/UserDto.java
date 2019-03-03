@@ -1,6 +1,10 @@
 package com.ffirechess.shared.dto;
 
+import com.ffirechess.io.entity.BlackPlayerGamesEntity;
+import com.ffirechess.io.entity.WhitePlayerGamesEntity;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDto implements Serializable {
 
@@ -14,7 +18,24 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
     private String emailVerificationToken;
     private Boolean emailVerificationStatus = false;
+    private List<WhitePlayerGamesEntity> gamesAsWhite;
+    private List<BlackPlayerGamesEntity> gamesAsBlack;
 
+    public List<WhitePlayerGamesEntity> getGamesAsWhite() {
+        return gamesAsWhite;
+    }
+
+    public void setGamesAsWhite(List<WhitePlayerGamesEntity> gamesAsWhite) {
+        this.gamesAsWhite = gamesAsWhite;
+    }
+
+    public List<BlackPlayerGamesEntity> getGamesAsBlack() {
+        return gamesAsBlack;
+    }
+
+    public void setGamesAsBlack(List<BlackPlayerGamesEntity> gamesAsBlack) {
+        this.gamesAsBlack = gamesAsBlack;
+    }
 
     public long getId() {
         return id;
