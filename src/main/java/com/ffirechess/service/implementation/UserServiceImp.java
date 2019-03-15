@@ -39,7 +39,6 @@ public class UserServiceImp implements UserService {
 
         if(userRepository.findByEmail(user.getEmail()) != null) throw new RuntimeException("Record already exists");
 
-//        BeanUtils.copyProperties(user, userEntity);
         ModelMapper modelMapper = new ModelMapper();
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 
@@ -49,7 +48,6 @@ public class UserServiceImp implements UserService {
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
-//        BeanUtils.copyProperties(storedUserDetails, returnValue);
         UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 
         return returnValue;

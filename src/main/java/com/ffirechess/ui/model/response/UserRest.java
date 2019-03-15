@@ -7,23 +7,14 @@ public class UserRest {
     private String userId;
     private String nick;
     private String email;
-    private List<WhitePlayaerGamesRest> whitePlayaerGames;
-    private List<BlackPlayaerGamesRest> blackPlayaerGames;
+    private List<GamesRest> userGames;
 
-    public List<WhitePlayaerGamesRest> getWhitePlayaerGames() {
-        return whitePlayaerGames;
+    public List<GamesRest> getUserGames() {
+        return userGames;
     }
 
-    public void setWhitePlayaerGames(List<WhitePlayaerGamesRest> whitePlayaerGames) {
-        this.whitePlayaerGames = whitePlayaerGames;
-    }
-
-    public List<BlackPlayaerGamesRest> getBlackPlayaerGames() {
-        return blackPlayaerGames;
-    }
-
-    public void setBlackPlayaerGames(List<BlackPlayaerGamesRest> blackPlayaerGames) {
-        this.blackPlayaerGames = blackPlayaerGames;
+    public void setUserGames(List<GamesRest> userGames) {
+        this.userGames = userGames;
     }
 
     public String getUserId() {

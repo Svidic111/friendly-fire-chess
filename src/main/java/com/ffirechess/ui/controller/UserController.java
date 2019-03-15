@@ -1,7 +1,7 @@
 package com.ffirechess.ui.controller;
 
 import com.ffirechess.exceptions.UserServiceException;
-import com.ffirechess.service.UserGamesService;
+import com.ffirechess.service.GamesService;
 import com.ffirechess.service.UserService;
 import com.ffirechess.shared.dto.GameDto;
 import com.ffirechess.shared.dto.UserDto;
@@ -9,13 +9,13 @@ import com.ffirechess.ui.model.request.UserDetaisRequestModel;
 import com.ffirechess.ui.model.response.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    UserGamesService userGamesService;
+    GamesService gamesService;
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UserRest getUser(@PathVariable String id) {
@@ -52,6 +52,7 @@ public class UserController {
 //        UserDto userDto = new UserDto();
 //        BeanUtils.copyProperties(userdDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userdDetails, UserDto.class);
 
         UserDto createdUser = userService.createUser(userDto);
@@ -104,13 +105,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/games", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public List<UserGamesRest> getUserGames(@PathVariable String id) {
-        List<UserGamesRest> returnValue = new ArrayList<>();
+    public List<GamesRest> getUserGames(@PathVariable String id) {
+        List<GamesRest> returnValue = new ArrayList<>();
 
-        List<GameDto> gamesDto = userGamesService.getUserGames(id);
+        List<GameDto> gamesDto = gamesService.getUserGames(id);
 
         if (gamesDto != null && !gamesDto.isEmpty()) {
-            Type listType = new TypeToken<List<UserGamesRest>>() {}.getType();
+            Type listType = new TypeToken<List<GamesRest>>() {}.getType();
             returnValue = new ModelMapper().map(gamesDto, listType);
         }
 
