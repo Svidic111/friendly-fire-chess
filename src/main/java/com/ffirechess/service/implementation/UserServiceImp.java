@@ -79,7 +79,9 @@ public class UserServiceImp implements UserService {
         UserDto returnValue = new UserDto();
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) throw new UsernameNotFoundException("User with ID: " + userId + " is not found");
+
         BeanUtils.copyProperties(userEntity, returnValue);
+
         return returnValue;
     }
 

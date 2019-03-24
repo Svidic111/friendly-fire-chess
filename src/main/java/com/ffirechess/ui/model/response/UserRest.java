@@ -7,15 +7,7 @@ public class UserRest {
     private String userId;
     private String nick;
     private String email;
-    private List<GamesRest> userGames;
-
-    public List<GamesRest> getUserGames() {
-        return userGames;
-    }
-
-    public void setUserGames(List<GamesRest> userGames) {
-        this.userGames = userGames;
-    }
+    private int rating;
 
     public String getUserId() {
         return userId;
@@ -39,5 +31,13 @@ public class UserRest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

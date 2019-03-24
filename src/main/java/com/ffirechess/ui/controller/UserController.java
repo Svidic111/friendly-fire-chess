@@ -33,10 +33,11 @@ public class UserController {
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UserRest getUser(@PathVariable String id) {
-        UserRest returnValue = new UserRest();
+        UserRest returnValue;
 
         UserDto userDto = userService.getUserByUserId(id);
-        BeanUtils.copyProperties(userDto, returnValue);
+        ModelMapper modelMapper = new ModelMapper();
+        returnValue = modelMapper.map(userDto, UserRest.class);
 
         return returnValue;
     }
@@ -49,8 +50,6 @@ public class UserController {
 
         if (userdDetails.getNick().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-//        UserDto userDto = new UserDto();
-//        BeanUtils.copyProperties(userdDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userdDetails, UserDto.class);
@@ -105,16 +104,26 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/games", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public List<GamesRest> getUserGames(@PathVariable String id) {
-        List<GamesRest> returnValue = new ArrayList<>();
+    public List<GameRest> getUserGames(@PathVariable String id) {
+        List<GameRest> returnValue = new ArrayList<>();
 
         List<GameDto> gamesDto = gamesService.getUserGames(id);
 
         if (gamesDto != null && !gamesDto.isEmpty()) {
-            Type listType = new TypeToken<List<GamesRest>>() {}.getType();
+            Type listType = new TypeToken<List<GameRest>>() {}.getType();
             returnValue = new ModelMapper().map(gamesDto, listType);
         }
 
         return returnValue;
+    }
+
+    @GetMapping(path = "/{id}/games/{gameId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public GameRest getUserGame(@PathVariable String gameId) {
+
+        GameDto gameDto = gamesService.getGame(gameId);
+
+        ModelMapper modelMapper = new ModelMapper();
+
+        return modelMapper.map(gameDto, GameRest.class);
     }
 }

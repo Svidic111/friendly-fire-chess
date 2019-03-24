@@ -1,0 +1,44 @@
+Index: src/main/java/com/ffirechess/ui/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/ffirechess/ui/controller/UserController.java	(date 1544477583215)
++++ src/main/java/com/ffirechess/ui/controller/UserController.java	(date 1544477583215)
+@@ -17,7 +17,7 @@
+ 
+ @SpringBootApplication
+ @RestController
+-@RequestMapping("users")    // http://localhost:8080/users
++@RequestMapping("/users")    // http://localhost:8080/users
+ public class UserController {
+ 
+     @Autowired
+Index: src/main/java/com/ffirechess/FriendlyFireChessApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/ffirechess/FriendlyFireChessApplication.java	(date 1541534828520)
++++ src/main/java/com/ffirechess/FriendlyFireChessApplication.java	(date 1541534828520)
+@@ -4,19 +4,12 @@
+ import com.ffirechess.service.implementation.UserServiceImp;
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
+-import org.springframework.boot.builder.SpringApplicationBuilder;
+-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+ 
+ @SpringBootApplication
+-public class FriendlyFireChessApplication extends SpringBootServletInitializer{
+-
+-	@Override
+-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+-		return application.sources()
+-	}
++public class FriendlyFireChessApplication {
+ 
+ 	public static void main(String[] args) {
+ 		SpringApplication.run(FriendlyFireChessApplication.class, args);
