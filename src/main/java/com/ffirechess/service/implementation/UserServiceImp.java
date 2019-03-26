@@ -86,6 +86,17 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public UserDto getUserById(long id) {
+        UserDto returnValue = new UserDto();
+        UserEntity userEntity = userRepository.findById(id);
+        if (userEntity == null) throw new UsernameNotFoundException("User with provided ID is not found");
+
+        BeanUtils.copyProperties(userEntity, returnValue);
+
+        return returnValue;
+    }
+
+    @Override
     public UserDto updateUser(String id, UserDto userDto) {
         UserDto returnValue = new UserDto();
         UserEntity userEntity = userRepository.findByUserId(id);

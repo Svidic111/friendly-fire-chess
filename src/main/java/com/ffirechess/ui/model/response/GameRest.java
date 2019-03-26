@@ -1,9 +1,11 @@
 package com.ffirechess.ui.model.response;
 
 
+import org.springframework.hateoas.ResourceSupport;
+
 import java.sql.Date;
 
-public class GameRest {
+public class GameRest extends ResourceSupport{
 
     private String gameId;
     private String movesPGN;

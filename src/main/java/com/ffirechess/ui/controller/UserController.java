@@ -13,6 +13,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +23,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @SpringBootApplication
 @RestController
-@RequestMapping("users")    // http://localhost:8080/users
+@RequestMapping("/users")    // http://localhost:8080/users
 public class UserController {
 
     @Autowired
@@ -33,13 +39,17 @@ public class UserController {
 
     @GetMapping(path = "/{id}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UserRest getUser(@PathVariable String id) {
-        UserRest returnValue;
+        UserRest userRestModel;
 
         UserDto userDto = userService.getUserByUserId(id);
-        ModelMapper modelMapper = new ModelMapper();
-        returnValue = modelMapper.map(userDto, UserRest.class);
 
-        return returnValue;
+        ModelMapper modelMapper = new ModelMapper();
+        userRestModel = modelMapper.map(userDto, UserRest.class);
+
+        Link userGamesLink = linkTo(methodOn(UserController.class).getUserGames(id, 1, 10)).withRel("userGames");
+        userRestModel.add(userGamesLink);
+
+        return userRestModel;
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
@@ -103,27 +113,53 @@ public class UserController {
         return returnValue;
     }
 
-    @GetMapping(path = "/{id}/games", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public List<GameRest> getUserGames(@PathVariable String id) {
-        List<GameRest> returnValue = new ArrayList<>();
+    @GetMapping(path = "/{id}/games", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE, "application/hal+json"})
+    public Resources<GameRest> getUserGames(@PathVariable String id,
+                                            @RequestParam(value="page", defaultValue="0") int page,
+                                            @RequestParam(value="limit", defaultValue="10") int limit) {
+        List<GameRest> gamesListRestModel = new ArrayList<>();
 
-        List<GameDto> gamesDto = gamesService.getUserGames(id);
+        List<GameDto> gamesDto = gamesService.getUserGames(id, page, limit);
 
         if (gamesDto != null && !gamesDto.isEmpty()) {
             Type listType = new TypeToken<List<GameRest>>() {}.getType();
-            returnValue = new ModelMapper().map(gamesDto, listType);
+            gamesListRestModel = new ModelMapper().map(gamesDto, listType);
+
+            for (GameRest gameRest : gamesListRestModel) {
+                Link userGameLink = linkTo(methodOn(UserController.class).getUserGame(gameRest.getGameId(), id)).withSelfRel();
+                gameRest.add(userGameLink);
+            }
         }
 
-        return returnValue;
+        return new Resources<>(gamesListRestModel);
     }
 
-    @GetMapping(path = "/{id}/games/{gameId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public GameRest getUserGame(@PathVariable String gameId) {
+    @GetMapping(path = "/{id}/games/{gameId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE, "application/hal+json"})
+    public Resource<GameRest> getUserGame(@PathVariable String gameId, @PathVariable String id) {
 
         GameDto gameDto = gamesService.getGame(gameId);
 
+        UserDto user = userService.getUserByUserId(id);
+
+        long rivalId;
+        if (gameDto.getWhitePlayer() == user.getId()) {
+            rivalId = gameDto.getBlackPlayer();
+        } else rivalId = gameDto.getWhitePlayer();
+
+        UserDto rival = userService.getUserById(rivalId);
+        String rivalUserId = rival.getUserId();
+
         ModelMapper modelMapper = new ModelMapper();
 
-        return modelMapper.map(gameDto, GameRest.class);
+        Link userLink = linkTo(methodOn(UserController.class).getUser(id)).withRel(user.getNick());
+        Link userGamesLink = linkTo(methodOn(UserController.class).getUserGames(id, 1, 10)).withRel("userGames");
+        Link rivalLink = linkTo(methodOn(UserController.class).getUser(rivalUserId)).withRel(rival.getNick());
+
+        GameRest gameRestModel = modelMapper.map(gameDto, GameRest.class);
+        gameRestModel.add(userLink);
+        gameRestModel.add(userGamesLink);
+        gameRestModel.add(rivalLink);
+
+        return new Resource<>(gameRestModel);
     }
 }

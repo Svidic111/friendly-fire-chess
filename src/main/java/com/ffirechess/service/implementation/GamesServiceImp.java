@@ -10,6 +10,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +29,11 @@ public class GamesServiceImp implements GamesService {
     GameRepository gameRepository;
 
     @Override
-    public List<GameDto> getUserGames(String userId) {
+    public List<GameDto> getUserGames(String userId, int page, int limit) {
         List<GameDto> returnValue = new ArrayList<>();
+
+        if (page > 0) page -= 1;
+
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addMappings(new PropertyMap<GameEntity, GameDto>() {
             @Override
@@ -36,10 +43,15 @@ public class GamesServiceImp implements GamesService {
             }
         });
 
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
         UserEntity userEntity = userRepository.findByUserId(userId);
         if (userEntity == null) return returnValue;
 
-        Iterable<GameEntity> playerGames = gameRepository.findAllUserGames(userEntity.getId());
+        Page<GameEntity> gamesPage = gameRepository.findAllUserGames(userEntity.getId(), pageableRequest);
+
+        List<GameEntity> playerGames = gamesPage.getContent();
+
         for (GameEntity gamesEntity : playerGames) {
             returnValue.add(modelMapper.map(gamesEntity, GameDto.class));
         }
