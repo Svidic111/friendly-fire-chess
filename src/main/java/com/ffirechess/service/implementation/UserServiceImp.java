@@ -4,6 +4,7 @@ import com.ffirechess.exceptions.UserServiceException;
 import com.ffirechess.io.repositories.UserRepository;
 import com.ffirechess.io.entity.UserEntity;
 import com.ffirechess.service.UserService;
+import com.ffirechess.shared.AmazonSES;
 import com.ffirechess.shared.Utils;
 import com.ffirechess.shared.dto.UserDto;
 import com.ffirechess.ui.model.response.ErrorMessages;
@@ -51,6 +52,9 @@ public class UserServiceImp implements UserService {
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
         UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
+
+        //Send an email message to user to verify his email address
+        new AmazonSES().verifyEmail(returnValue);
 
         return returnValue;
     }

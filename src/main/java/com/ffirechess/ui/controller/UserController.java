@@ -28,7 +28,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @SpringBootApplication
 @RestController
-@RequestMapping("/users")    // http://localhost:8080/users
+@RequestMapping("/users")    // http://localhost:8080/friendly-fire-chess
 public class UserController {
 
     @Autowired
@@ -163,6 +163,8 @@ public class UserController {
         return new Resource<>(gameRestModel);
     }
 
+
+    // http://localhost:8080/friendly-fire-chess/users/email-verification?token=knieff
     @GetMapping (path = "/email-verification", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token) {
 
