@@ -21,7 +21,8 @@ public class AmazonSES {
     final String HTMLBODY = "<h1>Please verify your email address</h1>"
             + "<p>Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " click on the following link: "
-            + "<a href='http://ec2-35-173-238-100.compute-1.amazonaws.com:8080/verification-service/email-verification.html?token=$tokenValue'>"
+            //+ "<a href='http://localhost:8080/verification-service/email-verification.html?token=$tokenValue'>"
+            + "<a href='http://ec2-54-144-228-104.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue'>"
             + "Final step to complete your registration" + "</a><br/><br/>"
             + "Thank you! And have fun!";
 
@@ -29,7 +30,8 @@ public class AmazonSES {
     final String TEXTBODY = "Please verify your email address. "
             + "Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " open then the following URL in your browser window: "
-            + " http://ec2-35-173-238-100.compute-1.amazonaws.com:8080/verification-service/email-verification.html?token=$tokenValue"
+            //+ "http://localhost:8080/verification-service/email-verification.html?token=$tokenValue"
+            + " http://ec2-54-144-228-104.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue"
             + " Thank you! And have fun!";
 
 
