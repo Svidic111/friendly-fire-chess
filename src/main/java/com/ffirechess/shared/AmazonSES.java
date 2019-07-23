@@ -5,10 +5,15 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
 import com.ffirechess.shared.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AmazonSES {
+    @Autowired
+    private Environment env;
+
     // This address must be verified with Amazon SES.
     final String FROM = "ffirechess@gmail.com";
 
@@ -53,8 +58,8 @@ public class AmazonSES {
     public void verifyEmail(UserDto userDto) {
 
         // You can also set your keys this way. And it will work!
-        System.setProperty("aws.accessKeyId", "AKIA6FOXIUMGSA42WR46");
-        System.setProperty("aws.secretKey", "ZLwjmIRCNQ3vZ9dB3cc/m+rfziqO86QOauNJaHaq");
+        System.setProperty("aws.accessKeyId", env.getProperty("aws.accessKeyId"));
+        System.setProperty("aws.secretKey", env.getProperty("aws.secretKey"));
 
         AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1)
                 .build();
