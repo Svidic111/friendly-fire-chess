@@ -55,9 +55,8 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-ses</artifactId>
-			<version>1.11.531</version>
+			<version>1.11.592</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,7 +64,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -89,18 +87,12 @@
 			<version>2.3.0</version>
 		</dependency>
 
-		<!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api &ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.tomcat</groupId>-->
-			<!--<artifactId>tomcat-servlet-api</artifactId>-->
-			<!--<version>7.0.76</version>-->
-		<!--</dependency>-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
 
 	</dependencies>
 

@@ -22,7 +22,7 @@ public class AmazonSES {
             + "<p>Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " click on the following link: "
             //+ "<a href='http://localhost:8080/verification-service/email-verification.html?token=$tokenValue'>"
-            + "<a href='http://ec2-54-144-228-104.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue'>"
+            + "<a href='http://ec2-54-224-227-48.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue'>"
             + "Final step to complete your registration" + "</a><br/><br/>"
             + "Thank you! And have fun!";
 
@@ -31,15 +31,30 @@ public class AmazonSES {
             + "Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " open then the following URL in your browser window: "
             //+ "http://localhost:8080/verification-service/email-verification.html?token=$tokenValue"
-            + " http://ec2-54-144-228-104.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue"
+            + " http://ec2-54-224-227-48.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue"
             + " Thank you! And have fun!";
 
+    final String PASSWORD_RESET_HTMLBODY = "<h1>A request to reset your password.</h1>"
+            + "<p>Hi, $nick!</p> "
+            + "<p>Someone has requested to reset your password with our project. If it was not you, please ignore it."
+            + " Otherwise please click on the link below to set a new password: "
+            + "<a href='http://localhost:8080/verification-service/password-reset.html?token=$tokenValue'>"
+            + " Click this link to Reset Password"
+            + "</a><br/><br/>"
+            + "Thank you!";
+
+    final String PASSWORD_RESET_TEXTBODY = "A request to reset your password "
+            + "Hi, $nick! "
+            + "Someone has requested to reset your password with our project. If it was not you, please ignore it."
+            + " Otherwise please open the link below in your browser window to set a new password:"
+            + " http://localhost:8080/verification-service/password-reset.html?token=$tokenValue"
+            + " Thank you!";
 
     public void verifyEmail(UserDto userDto) {
 
         // You can also set your keys this way. And it will work!
-        //System.setProperty("aws.accessKeyId", "<YOUR KEY ID HERE>");
-        //System.setProperty("aws.secretKey", "<SECRET KEY HERE>");
+        System.setProperty("aws.accessKeyId", "AKIA6FOXIUMGSA42WR46");
+        System.setProperty("aws.secretKey", "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");
 
         AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1)
                 .build();
@@ -60,4 +75,32 @@ public class AmazonSES {
         System.out.println("Email sent!");
 
     }
+
+    public boolean sendPasswordResetRequest(String nick, String email, String token) {
+        boolean returnValue = false;
+
+        AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+
+        String htmlBodyWithToken = PASSWORD_RESET_HTMLBODY.replace("$tokenValue", token);
+        htmlBodyWithToken.replace("$nick", nick);
+
+        String textBodyWithToken = PASSWORD_RESET_TEXTBODY.replace("$tokenValue", token);
+        textBodyWithToken.replace("$nick", nick);
+
+        SendEmailRequest request = new SendEmailRequest()
+                .withDestination(new Destination().withToAddresses(email)).withMessage(new Message().withBody(new Body()
+                .withHtml(new Content().withCharset("UTF-8").withData(htmlBodyWithToken))
+                .withText(new Content().withCharset("UTF-8").withData(textBodyWithToken)))
+                .withSubject(new Content().withCharset("UTF-8").withData(PASSWORD_RESET_SUBJECT)))
+                .withSource(FROM);
+
+        SendEmailResult result = client.sendEmail(request);
+
+        if (result != null && result.getMessageId() != null && !result.getMessageId().isEmpty()) {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+
 }

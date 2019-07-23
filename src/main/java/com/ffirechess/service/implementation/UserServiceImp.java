@@ -1,6 +1,8 @@
 package com.ffirechess.service.implementation;
 
 import com.ffirechess.exceptions.UserServiceException;
+import com.ffirechess.io.entity.PasswordResetTokenEntity;
+import com.ffirechess.io.repositories.PasswordResetTokenRepository;
 import com.ffirechess.io.repositories.UserRepository;
 import com.ffirechess.io.entity.UserEntity;
 import com.ffirechess.service.UserService;
@@ -34,6 +36,9 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Override
     public UserDto createUser(UserDto user) {
@@ -165,6 +170,27 @@ public class UserServiceImp implements UserService {
                 returnValue = true;
             }
         }
+
+        return returnValue;
+    }
+
+    @Override
+    public boolean requestPasswordReset(String email) {
+        boolean returnValue = false;
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null) {
+            return returnValue;
+        }
+
+        String token = new Utils().generatePasswordResetToken(userEntity.getUserId());
+
+        PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+        passwordResetTokenEntity.setToken(token);
+        passwordResetTokenEntity.setUserDetails(userEntity);
+        passwordResetTokenRepository.save(passwordResetTokenEntity);
+
+        returnValue = new AmazonSES().sendPasswordResetRequest(userEntity.getNick(), userEntity.getEmail(), token);
 
         return returnValue;
     }
