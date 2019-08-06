@@ -177,6 +177,7 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean requestPasswordReset(String email) {
         boolean returnValue = false;
+
         UserEntity userEntity = userRepository.findByEmail(email);
 
         if (userEntity == null) {
