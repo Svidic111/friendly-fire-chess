@@ -5,6 +5,7 @@ import com.ffirechess.service.GamesService;
 import com.ffirechess.service.UserService;
 import com.ffirechess.shared.dto.GameDto;
 import com.ffirechess.shared.dto.UserDto;
+import com.ffirechess.ui.model.request.PasswordResetModel;
 import com.ffirechess.ui.model.request.PasswordResetRequestModel;
 import com.ffirechess.ui.model.request.UserDetaisRequestModel;
 import com.ffirechess.ui.model.response.*;
@@ -201,5 +202,23 @@ public class UserController {
         }
 
         return returnValue;
+    }
+
+    // http://localhost:8080/friendly-fire-chess/users/password-reset
+    @PostMapping(path="/password-reset",
+            consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public OperationStatusModel resetPassword(@RequestBody PasswordResetModel passwordResetModel) {
+        OperationStatusModel retunValue = new OperationStatusModel();
+
+        boolean operationResult = userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
+
+        retunValue.setOperationName(RequestOperationName.PASSWORD_RESET.name());
+        retunValue.setOperationResult(RequestOperationStatus.ERROR.name());
+
+        if (operationResult) {
+            retunValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+        }
+
+        return retunValue;
     }
 }

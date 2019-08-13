@@ -27,7 +27,7 @@ public class AmazonSES {
             + "<p>Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " click on the following link: "
             //+ "<a href='http://localhost:8080/verification-service/email-verification.html?token=$tokenValue'>"
-            + "<a href='http://ec2-54-224-227-48.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue'>"
+            + "<a href='http://localhost:8080/ffchess.verification-service/email-verification.html?token=$tokenValue'>"
             + "Final step to complete your registration" + "</a><br/><br/>"
             + "Thank you! And have fun!";
 
@@ -36,14 +36,14 @@ public class AmazonSES {
             + "Thank you for registering with our web app. To complete registration process and be able to log in,"
             + " open then the following URL in your browser window: "
             //+ "http://localhost:8080/verification-service/email-verification.html?token=$tokenValue"
-            + " http://ec2-54-224-227-48.compute-1.amazonaws.com:8080/ffchess.verification-service/email-verification.html?token=$tokenValue"
+            + " http://localhost:8080/ffchess.verification-service/email-verification.html?token=$tokenValue"
             + " Thank you! And have fun!";
 
     final String PASSWORD_RESET_HTMLBODY = "<h1>A request to reset your password.</h1>"
             + "<p>Hi, $nick!</p> "
             + "<p>Someone has requested to reset your password with our project. If it was not you, please ignore it."
             + " Otherwise please click on the link below to set a new password: "
-            + "<a href='http://localhost:8080/verification-service/password-reset.html?token=$tokenValue'>"
+            + "<a href='http://localhost:8080/ffchess.verification-service/password-reset.html?token=$tokenValue'>"
             + " Click this link to Reset Password"
             + "</a><br/><br/>"
             + "Thank you!";
@@ -52,7 +52,7 @@ public class AmazonSES {
             + "Hi, $nick! "
             + "Someone has requested to reset your password with our project. If it was not you, please ignore it."
             + " Otherwise please open the link below in your browser window to set a new password:"
-            + " http://localhost:8080/verification-service/password-reset.html?token=$tokenValue"
+            + " http://localhost:8080/ffchess.verification-service//password-reset.html?token=$tokenValue"
             + " Thank you!";
 
     public void verifyEmail(UserDto userDto) {
