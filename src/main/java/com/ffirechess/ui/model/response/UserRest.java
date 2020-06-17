@@ -8,7 +8,7 @@ public class UserRest  extends ResourceSupport {
 
     private String userId;
     private String nick;
-    private String email;
+    //private String email;
     private int rating;
 
     public String getUserId() {
@@ -27,13 +27,13 @@ public class UserRest  extends ResourceSupport {
         this.nick = nick;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
     public int getRating() {
         return rating;

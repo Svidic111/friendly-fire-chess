@@ -1,6 +1,6 @@
 package com.ffirechess.ui.model.request;
 
-public class UserDetaisRequestModel {
+public class UserDetailsRequestModel {
 
     private String nick;
     private String email;

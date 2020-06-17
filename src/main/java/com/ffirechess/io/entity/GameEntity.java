@@ -45,6 +45,7 @@ public class GameEntity implements Serializable{
     @Column(length = 30, nullable = false)
     private String winnerNick;
 
+
     public long getId() {
         return id;
     }

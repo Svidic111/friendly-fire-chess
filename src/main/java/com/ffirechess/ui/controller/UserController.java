@@ -7,7 +7,7 @@ import com.ffirechess.shared.dto.GameDto;
 import com.ffirechess.shared.dto.UserDto;
 import com.ffirechess.ui.model.request.PasswordResetModel;
 import com.ffirechess.ui.model.request.PasswordResetRequestModel;
-import com.ffirechess.ui.model.request.UserDetaisRequestModel;
+import com.ffirechess.ui.model.request.UserDetailsRequestModel;
 import com.ffirechess.ui.model.response.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -28,7 +28,7 @@ import java.util.List;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@SpringBootApplication
+//@SpringBootApplication
 @RestController
 @RequestMapping("/users")    // http://localhost:8080/friendly-fire-chess
 public class UserController {
@@ -56,9 +56,9 @@ public class UserController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
                  produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public UserRest createUser(@RequestBody UserDetaisRequestModel userdDetails) {
+    public UserRest createUser(@RequestBody UserDetailsRequestModel userdDetails) {
 
-        UserRest returnValue = new UserRest();
+        UserRest returnValue;
 
         if (userdDetails.getNick().isEmpty()) throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
@@ -75,7 +75,7 @@ public class UserController {
     @PutMapping(path = "/{id}",
                 consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
                 produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public  UserRest updateUser(@RequestBody UserDetaisRequestModel userdDetails, @PathVariable String id) {
+    public  UserRest updateUser(@RequestBody UserDetailsRequestModel userdDetails, @PathVariable String id) {
 
         UserRest returnValue = new UserRest();
 

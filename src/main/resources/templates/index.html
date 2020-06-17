@@ -1,0 +1,44 @@
+<DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Friendly fire chess</title>
+
+        <link rel="stylesheet" th:href='@{/static/css/style.css}'/>
+    </head>
+
+    <body>
+        <header>
+            <div class="main_header">
+                <div>
+                    <a id="icon"><img th:src='@{/static/img/logo_1.png}' width="40" height="70" border="0" /></a>
+                </div>
+
+                <div id="main_title">
+                    <span>Friendly Fire Chess</span>
+                </div>
+
+                <div class="authentication_bar">
+                    <div>
+                        <span><a id="log_in_button" th:href='@{/login}'>Login</a></span>
+                    </div>
+
+                    <div>
+                        <span><a id="sign_in_button" th:href='@{/signin}'>Sign In</a></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </header>
+
+        <!--        <script src="index.js"></script>-->
+    </body>
+
+
+
+
+    </html>

@@ -1,0 +1,58 @@
+.body {
+    margin: 0;
+    padding: 3px;
+}
+
+
+.main_header {
+    background-color: rgb(250, 250, 240);
+    height: 70px;
+    border-bottom: solid thin blue;
+    text-align: left;
+}
+
+#icon {
+    float: left;
+    display: inline-flex;
+}
+
+
+#main_title {
+    float: center;
+    display: inline-flex;
+    display: inline-block;
+    color: #116ebf;
+    font-family: calibri;
+    font-size: 50px;
+    text-align: center;
+}
+
+
+.authentication_bar {
+    display: inline-block;
+    display: inline-flex;
+    float: right;
+    flex-direction: column;
+}
+
+
+#log_in_button {
+    display: inline-block;
+    float: right;
+    color: #116ebf;
+    font-family: calibri;
+    font-size: 20px;
+    text-align: right;
+    text-decoration: none
+}
+
+
+#sign_in_button {
+    display: inline-block;
+    float: right;
+    color: #116ebf;
+    font-family: calibri;
+    font-size: 20px;
+    text-align: right;
+    text-decoration: none
+}

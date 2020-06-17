@@ -32,10 +32,25 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL)
                 .permitAll()
+                .antMatchers(SecurityConstants.H2_CONSOLE)
+                .permitAll()
+                .antMatchers(SecurityConstants.HOME_PAGE)
+                .permitAll()
+                .antMatchers(SecurityConstants.STATIC_RESOURCES)
+                .permitAll()
                 .anyRequest().authenticated().and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll().and()
                 .addFilter(getAuthenticationFilter())
                 .addFilter(new AuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // remove this line after using H2!!!
+//        http.headers().frameOptions().disable();
     }
 
     @Override
